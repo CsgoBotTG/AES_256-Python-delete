@@ -120,7 +120,7 @@ def encrypt(passwd, input_file_path):
     return True
 
 
-def decrypt_key(key, input_file_path):
+def decrypt_key(key, input_file_path, to_delete=False):
     input_file = open(input_file_path, "rb")
 
     bytes_temp = input_file.read(112)
@@ -144,7 +144,8 @@ def decrypt_key(key, input_file_path):
 
     input_file.close()
     output_file.close()
-    os.remove(input_file_path)
+    if to_delete:
+        os.remove(input_file_path)
 
 
 def decrypt(passwd, input_file_path):
@@ -157,7 +158,7 @@ def decrypt(passwd, input_file_path):
     key = generate_AES256_key(passwd, salt)
 
     print(f"Decrypting {input_file_path}")
-    decrypt_key(key, input_file_path)
+    decrypt_key(key, input_file_path, input("Delete? (1/0) ") == "1")
     print_green("File is decrypted.")
 
     return True
